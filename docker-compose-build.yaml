@@ -1,0 +1,46 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ramen_go_db
+      SPRING_DATASOURCE_USERNAME: ${DEV_DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DEV_DB_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    networks:
+      - ramen-go-api-network
+
+  db:
+    image: postgres:alpine
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_USER=${DEV_DB_USERNAME}
+      - POSTGRES_PASSWORD=${DEV_DB_PASSWORD}
+      - POSTGRES_DB=ramen_go_db
+    networks:
+      - ramen-go-api-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${DEV_PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${DEV_PGADMIN_PASSWORD}
+      PGADMIN_SERVER_JSON_FILE: '/pgadmin4/servers.json'
+    depends_on:
+      - db
+    ports:
+      - 16543:80
+    volumes:
+      - ./pgadmin-servers.json:/pgadmin4/servers.json
+    networks:
+      - ramen-go-api-network
+
+networks:
+  ramen-go-api-network:
+    driver: bridge

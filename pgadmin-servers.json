@@ -1,0 +1,12 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "Ramen Go DB Server - DEV",
+      "Group": "Servers",
+      "Host": "db",
+      "Port": 5432,
+      "MaintenanceDB": "ramen_go_db",
+      "Username": "admin"
+    }
+  }
+}

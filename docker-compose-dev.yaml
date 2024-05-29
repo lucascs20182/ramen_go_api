@@ -1,0 +1,28 @@
+services:
+  db:
+    image: postgres:alpine
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_USER=${DEV_DB_USERNAME}
+      - POSTGRES_PASSWORD=${DEV_DB_PASSWORD}
+      - POSTGRES_DB=ramen_go_db
+    networks:
+      - ramen-go-api-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${DEV_PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${DEV_PGADMIN_PASSWORD}
+      PGADMIN_SERVER_JSON_FILE: '/pgadmin4/servers.json'
+    ports:
+      - 16543:80
+    volumes:
+      - ./pgadmin-servers.json:/pgadmin4/servers.json
+    networks:
+      - ramen-go-api-network
+
+networks:
+  ramen-go-api-network:
+    driver: bridge
