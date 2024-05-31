@@ -18,4 +18,8 @@ public class BrothService {
     return repository.findAll();
   }
 
+  public BrothEntity create(BrothEntity entity) {
+    return repository.save(entity);
+  }
+
 }

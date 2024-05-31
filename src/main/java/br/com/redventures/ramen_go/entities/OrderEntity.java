@@ -1,35 +1,29 @@
 package br.com.redventures.ramen_go.entities;
 
-import java.util.List;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "Broth")
+@Table(name = "RamenOrder") // Avoid conflicts with the SQL reserved word "order"
 @Data
-public class BrothEntity {
+public class OrderEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String imageInactive;
+  @ManyToOne
+  @JoinColumn(name = "broth_id")
+  private BrothEntity broth;
 
-  private String imageActive;
-
-  private String name;
-
-  private String description;
-
-  private Double price;
-
-  @OneToMany(mappedBy = "broth")
-  private List<OrderEntity> orders;
+  @ManyToOne
+  @JoinColumn(name = "protein_id")
+  private ProteinEntity protein;
 
 }

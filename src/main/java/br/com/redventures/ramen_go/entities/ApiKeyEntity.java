@@ -1,35 +1,30 @@
 package br.com.redventures.ramen_go.entities;
 
-import java.util.List;
+import java.time.Instant;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "Broth")
+@Table(name = "ApiKey")
 @Data
-public class BrothEntity {
+public class ApiKeyEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String imageInactive;
+  private String apiKey;
 
-  private String imageActive;
+  private Instant expirationTime;
 
-  private String name;
-
-  private String description;
-
-  private Double price;
-
-  @OneToMany(mappedBy = "broth")
-  private List<OrderEntity> orders;
+  public ApiKeyEntity(String apiKey, Instant expirationTime) {
+    this.apiKey = apiKey;
+    this.expirationTime = expirationTime;
+  }
 
 }

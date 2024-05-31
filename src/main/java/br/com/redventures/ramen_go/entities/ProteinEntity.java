@@ -11,9 +11,9 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "Broth")
+@Table(name = "Protein")
 @Data
-public class BrothEntity {
+public class ProteinEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class BrothEntity {
 
   private Double price;
 
-  @OneToMany(mappedBy = "broth")
+  @OneToMany(mappedBy = "protein")
   private List<OrderEntity> orders;
 
 }

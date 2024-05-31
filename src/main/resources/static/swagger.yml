@@ -4,9 +4,24 @@ info:
   description: This API allows users to list available broths, available proteins and place an order.
   version: 1.0.0
 servers:
-  # - url: https://your-api-gateway-url
-  - url: https://experimental-ramen-go-api.onrender.com/
+  # - url: https://ramen-go-api-prod.onrender.com/v1/ # API gateway url
+  - url: http://localhost:8080/v1/ # API gateway url
 paths:
+  /apikey:
+    post:
+      summary: Generate API keys
+      operationId: generateApiKey
+      responses:
+        '200':
+          description: An API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: apiKey
+                    example: "3lqndz8iaHiGQZVfPshl/0eM15lKyWxRwGOhlkeeBoo="
   /broths:
     get:
       summary: List all available broths
@@ -55,6 +70,69 @@ paths:
                   error:
                     type: string
                     example: "x-api-key header missing"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "x-api-key header has an invalid API key"
+    post:
+      summary: Create a broth
+      operationId: createBroth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imageInactive:
+                  type: string
+                imageActive:
+                  type: string
+                name:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: number
+      parameters:
+        - in: header
+          name: x-api-key
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: A new broth was created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Broth'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "x-api-key header missing"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "x-api-key header has an invalid API key"
   /proteins:
     get:
       summary: List all available proteins
