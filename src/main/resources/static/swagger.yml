@@ -323,6 +323,16 @@ paths:
                 proteinId:
                   type: string
                   example: "1"
+          text/plain:
+            schema:
+              type: object
+              properties:
+                brothId:
+                  type: string
+                  example: "1"
+                proteinId:
+                  type: string
+                  example: "1"
       responses:
         '201':
           description: Order placed successfully
