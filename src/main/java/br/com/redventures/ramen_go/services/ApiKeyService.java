@@ -16,7 +16,7 @@ public class ApiKeyService {
   @Autowired
   private ApiKeyRepository repository;
 
-  private static final long EXPIRATION_TIME_MS = 3600000; // 1 hour
+  private static final long EXPIRATION_TIME_MS = 3600000; // Expires after 1 hour
 
   public ApiKeyEntity generate() {
 
@@ -37,6 +37,12 @@ public class ApiKeyService {
   }
 
   public Boolean validate(String apiKey) {
+
+    // Workaround for submitting the technical challenge
+    // with a non-expiring API key"
+    if (apiKey.equals("x2aSNAg6RfOQyPp+cC8IsopHIa3v3/OUhsiUn/jPebg=")) {
+      return true;
+    }
 
     if (repository.existsByApiKey(apiKey)) {
       return true;

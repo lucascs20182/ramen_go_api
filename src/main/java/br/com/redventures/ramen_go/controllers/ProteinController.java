@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.redventures.ramen_go.dtos.BrothResponseDTO;
-import br.com.redventures.ramen_go.entities.BrothEntity;
+import br.com.redventures.ramen_go.dtos.ProteinResponseDTO;
+import br.com.redventures.ramen_go.entities.ProteinEntity;
 import br.com.redventures.ramen_go.exceptions.InvalidApiKeyException;
 import br.com.redventures.ramen_go.exceptions.MissingApiKeyException;
 import br.com.redventures.ramen_go.services.ApiKeyService;
-import br.com.redventures.ramen_go.services.BrothService;
+import br.com.redventures.ramen_go.services.ProteinService;
 
 @RestController
-@RequestMapping("/broths")
-public class BrothController {
+@RequestMapping("/proteins")
+public class ProteinController {
 
   @Autowired
-  private BrothService service;
+  private ProteinService service;
 
   @Autowired
   private ApiKeyService apiKeyService;
@@ -44,12 +44,12 @@ public class BrothController {
       throw new InvalidApiKeyException();
     }
 
-    List<BrothEntity> entities = service.listAll();
+    List<ProteinEntity> entities = service.listAll();
 
-    List<BrothResponseDTO> responseDTOs = new ArrayList<BrothResponseDTO>();
+    List<ProteinResponseDTO> responseDTOs = new ArrayList<ProteinResponseDTO>();
 
     entities.forEach(entity -> {
-      BrothResponseDTO responseDTO = new BrothResponseDTO();
+      ProteinResponseDTO responseDTO = new ProteinResponseDTO();
       BeanUtils.copyProperties(entity, responseDTO);
 
       responseDTOs.add(responseDTO);
@@ -61,7 +61,7 @@ public class BrothController {
   @PostMapping
   public ResponseEntity<?> create(
     @RequestHeader(name = "x-api-key", required = false) String apiKey,
-    @RequestBody BrothEntity broth
+    @RequestBody ProteinEntity protein
   ) {
 
     if (apiKey == null) {
@@ -72,8 +72,8 @@ public class BrothController {
       throw new InvalidApiKeyException();
     }
 
-    BrothEntity entity = service.create(broth);
-    BrothResponseDTO responseDTO = new BrothResponseDTO();
+    ProteinEntity entity = service.create(protein);
+    ProteinResponseDTO responseDTO = new ProteinResponseDTO();
 
     BeanUtils.copyProperties(entity, responseDTO);
 

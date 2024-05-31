@@ -20,6 +20,18 @@ public class GlobalExceptionHandler {
       .body(new ErrorResponse(ex.getMessage()));
   }
 
+  @ExceptionHandler(InvalidRequestException.class)
+  public ResponseEntity<?> handleInvalidRequestException(InvalidRequestException ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+      .body(new ErrorResponse(ex.getMessage()));
+  }
+
+  @ExceptionHandler(InternalServerErrorException.class)
+  public ResponseEntity<?> handleInternalServerErrorException(InternalServerErrorException ex) {
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+      .body(new ErrorResponse(ex.getMessage()));
+  }
+
   static class ErrorResponse {
     private final String error;
 

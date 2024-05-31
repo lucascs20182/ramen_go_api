@@ -3,6 +3,8 @@ package br.com.redventures.ramen_go.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,19 +16,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.redventures.ramen_go.dtos.BrothResponseDTO;
-import br.com.redventures.ramen_go.entities.BrothEntity;
+import br.com.redventures.ramen_go.dtos.OrderRequestDTO;
+import br.com.redventures.ramen_go.dtos.OrderResponseDTO;
+import br.com.redventures.ramen_go.entities.OrderEntity;
+import br.com.redventures.ramen_go.exceptions.InternalServerErrorException;
 import br.com.redventures.ramen_go.exceptions.InvalidApiKeyException;
+import br.com.redventures.ramen_go.exceptions.InvalidRequestException;
 import br.com.redventures.ramen_go.exceptions.MissingApiKeyException;
 import br.com.redventures.ramen_go.services.ApiKeyService;
-import br.com.redventures.ramen_go.services.BrothService;
+import br.com.redventures.ramen_go.services.OrderService;
 
 @RestController
-@RequestMapping("/broths")
-public class BrothController {
+@RequestMapping("/orders")
+public class OrderController {
+
+  private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
   @Autowired
-  private BrothService service;
+  private OrderService service;
 
   @Autowired
   private ApiKeyService apiKeyService;
@@ -44,12 +51,12 @@ public class BrothController {
       throw new InvalidApiKeyException();
     }
 
-    List<BrothEntity> entities = service.listAll();
+    List<OrderEntity> entities = service.listAll();
 
-    List<BrothResponseDTO> responseDTOs = new ArrayList<BrothResponseDTO>();
+    List<OrderResponseDTO> responseDTOs = new ArrayList<OrderResponseDTO>();
 
     entities.forEach(entity -> {
-      BrothResponseDTO responseDTO = new BrothResponseDTO();
+      OrderResponseDTO responseDTO = new OrderResponseDTO();
       BeanUtils.copyProperties(entity, responseDTO);
 
       responseDTOs.add(responseDTO);
@@ -59,9 +66,9 @@ public class BrothController {
   }
 
   @PostMapping
-  public ResponseEntity<?> create(
+  public ResponseEntity<?> placeOrder(
     @RequestHeader(name = "x-api-key", required = false) String apiKey,
-    @RequestBody BrothEntity broth
+    @RequestBody OrderRequestDTO orderRequest
   ) {
 
     if (apiKey == null) {
@@ -72,12 +79,23 @@ public class BrothController {
       throw new InvalidApiKeyException();
     }
 
-    BrothEntity entity = service.create(broth);
-    BrothResponseDTO responseDTO = new BrothResponseDTO();
+    if (orderRequest.getBrothId() == null || orderRequest.getProteinId() == null) {
+      throw new InvalidRequestException("both brothId and proteinId are required");
+    }
 
-    BeanUtils.copyProperties(entity, responseDTO);
+    try {
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+      OrderResponseDTO responseDTO = service.placeOrder(orderRequest);
+
+      return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+
+    } catch (Exception e) {
+
+      logger.error("could not place order: {}", e.getMessage());
+
+      throw new InternalServerErrorException("could not place order");
+
+    }
   }
 
 }

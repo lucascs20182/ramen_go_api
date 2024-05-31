@@ -6,11 +6,18 @@ info:
 servers:
   # - url: https://ramen-go-api-prod.onrender.com/v1/ # API gateway url
   - url: http://localhost:8080/v1/ # API gateway url
+tags:
+  - name: default
+    description: Default endpoints requested by the technical challenge
+  - name: extra
+    description: Additional endpoints not required by the technical challenge
 paths:
   /apikey:
     post:
-      summary: Generate API keys
+      summary: Generate a API key
       operationId: generateApiKey
+      tags:
+        - extra
       responses:
         '200':
           description: An API key
@@ -21,11 +28,13 @@ paths:
                 properties:
                   id:
                     type: apiKey
-                    example: "3lqndz8iaHiGQZVfPshl/0eM15lKyWxRwGOhlkeeBoo="
+                    example: "string"
   /broths:
     get:
       summary: List all available broths
       operationId: listBroths
+      tags:
+        - default
       parameters:
         - in: header
           name: x-api-key
@@ -83,6 +92,8 @@ paths:
     post:
       summary: Create a broth
       operationId: createBroth
+      tags:
+        - extra
       requestBody:
         required: true
         content:
@@ -137,6 +148,8 @@ paths:
     get:
       summary: List all available proteins
       operationId: listProteins
+      tags:
+        - default
       parameters:
         - in: header
           name: x-api-key
@@ -181,10 +194,115 @@ paths:
                   error:
                     type: string
                     example: "x-api-key header missing"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "x-api-key header has an invalid API key"
+    post:
+      summary: Create a protein
+      operationId: createProtein
+      tags:
+        - extra
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imageInactive:
+                  type: string
+                imageActive:
+                  type: string
+                name:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: number
+      parameters:
+        - in: header
+          name: x-api-key
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: A new protein was created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Protein'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "x-api-key header missing"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "x-api-key header has an invalid API key"
   /orders:
+    get:
+      summary: List all available orders
+      operationId: listOrders
+      tags:
+        - extra
+      parameters:
+        - in: header
+          name: x-api-key
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of orders
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "x-api-key header missing"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "x-api-key header has an invalid API key"
     post:
       summary: Place an order
       operationId: placeOrder
+      tags:
+        - default
       parameters:
         - in: header
           name: x-api-key
