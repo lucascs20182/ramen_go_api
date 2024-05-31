@@ -5,10 +5,6 @@ import lombok.Data;
 @Data
 public class OrderResponseDTO {
 
-  private Long id;
-
-  private String description;
-
-  private String image;
+  private Long orderId;
 
 }

@@ -27,7 +27,7 @@ import br.com.redventures.ramen_go.services.ApiKeyService;
 import br.com.redventures.ramen_go.services.OrderService;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/order")
 public class OrderController {
 
   private static final Logger logger = LoggerFactory.getLogger(OrderService.class);

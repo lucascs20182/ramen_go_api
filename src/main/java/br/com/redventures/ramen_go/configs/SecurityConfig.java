@@ -6,6 +6,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import jakarta.servlet.DispatcherType;
 
@@ -23,6 +26,21 @@ public class SecurityConfig {
             .requestMatchers("/**")
               .permitAll())
         .build();
+  }
+
+  @Bean
+  CorsFilter corsFilter() {
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    CorsConfiguration config = new CorsConfiguration();
+
+    config.setAllowCredentials(true);
+    config.addAllowedOriginPattern("*");
+    config.addAllowedHeader("*");
+    config.addAllowedMethod("*");
+    source.registerCorsConfiguration("/**", config);
+
+    return new CorsFilter(source);
   }
 
 }

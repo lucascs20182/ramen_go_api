@@ -259,7 +259,7 @@ paths:
                   error:
                     type: string
                     example: "x-api-key header has an invalid API key"
-  /orders:
+  /order:
     get:
       summary: List all available orders
       operationId: listOrders

@@ -49,11 +49,7 @@ public class OrderService {
     OrderEntity savedOrderEntity = repository.save(orderEntity);
 
     OrderResponseDTO orderResponse = new OrderResponseDTO();
-    String description = brothEntity.getName() + " and " + proteinEntity.getName() + " Ramen";
-
-    orderResponse.setId(savedOrderEntity.getId());
-    orderResponse.setDescription(description);
-    orderResponse.setImage("https://tech.redventures.com.br/icons/ramen/ramenChasu.png");
+    orderResponse.setOrderId(savedOrderEntity.getId());
 
     return orderResponse;
   }
