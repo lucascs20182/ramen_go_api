@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 import br.com.redventures.ramen_go.entities.OrderEntity;
 
 @Repository
-public interface OrderRepository extends JpaRepository<OrderEntity, Long> { }
+public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
+
+  boolean existsByOrderId(String orderId);
+
+}

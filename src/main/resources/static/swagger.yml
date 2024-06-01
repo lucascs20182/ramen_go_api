@@ -339,17 +339,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    example: "12345"
-                  description:
-                    type: string
-                    example: "Salt and Chasu Ramen"
-                  image:
-                    type: string
-                    example: "https://tech.redventures.com.br/icons/ramen/ramenChasu.png"
+                $ref: '#/components/schemas/OrderResponse'
         '400':
           description: Invalid request
           content:

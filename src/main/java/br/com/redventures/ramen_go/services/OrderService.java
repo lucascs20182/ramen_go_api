@@ -1,6 +1,7 @@
 package br.com.redventures.ramen_go.services;
 
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,17 +42,39 @@ public class OrderService {
       .findById(Long.valueOf(orderRequest.getProteinId()))
       .orElseThrow(() -> new InvalidRequestException("Invalid protein ID"));
 
+    String description = brothEntity.getName()
+      + " and " + proteinEntity.getName();
+
     OrderEntity orderEntity = new OrderEntity();
 
     orderEntity.setBroth(brothEntity);
     orderEntity.setProtein(proteinEntity);
+    orderEntity.setOrderId(generateUniqueOrderId());
+    orderEntity.setDescription(description);
+    orderEntity.setImage("https://tech.redventures.com.br/icons/ramen/ramenChasu.png");
 
     OrderEntity savedOrderEntity = repository.save(orderEntity);
 
     OrderResponseDTO orderResponse = new OrderResponseDTO();
-    orderResponse.setOrderId(savedOrderEntity.getId());
+
+    orderResponse.setId(savedOrderEntity.getOrderId());
+    orderResponse.setDescription(savedOrderEntity.getDescription());
+    orderResponse.setImage(savedOrderEntity.getImage());
 
     return orderResponse;
+  }
+
+  private String generateUniqueOrderId() {
+
+    String orderId;
+    Random random = new Random();
+
+    do {
+      // Generate a random number between 000000 and 999999
+      orderId = String.format("%06d", random.nextInt(1000000));
+    } while (repository.existsByOrderId(orderId));
+
+    return orderId;
   }
 
 }
