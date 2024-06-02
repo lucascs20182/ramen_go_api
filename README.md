@@ -55,3 +55,13 @@ The project is set up with auto-deploy, so every push or merge to the main branc
     - Debug the server by installing [Spring Boot Extension Pack](https://marketplace.visualstudio.com/items?itemName=vmware.vscode-boot-dev-pack) and pressing F5 (live reload enabled)
 
     - Stop containers with `docker compose -f docker-compose-dev.yaml down`
+
+## How to run tests
+
+- Use the [application-test.properties](src/main/resources/application-test.properties) profile
+
+- Run tests with `./mvnw test`
+
+- Check test coverage with `./mvnw clean test jacoco:report`
+
+    80%+ unit test coverage.

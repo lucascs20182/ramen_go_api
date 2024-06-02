@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,18 +50,31 @@ public class OrderController {
       throw new InvalidApiKeyException();
     }
 
-    List<OrderEntity> entities = service.listAll();
+    try {
 
-    List<OrderResponseDTO> responseDTOs = new ArrayList<OrderResponseDTO>();
+      List<OrderEntity> entities = service.listAll();
 
-    entities.forEach(entity -> {
-      OrderResponseDTO responseDTO = new OrderResponseDTO();
-      BeanUtils.copyProperties(entity, responseDTO);
+      List<OrderResponseDTO> responseDTOs = new ArrayList<OrderResponseDTO>();
 
-      responseDTOs.add(responseDTO);
-    });
+      entities.forEach(entity -> {
+        OrderResponseDTO responseDTO = new OrderResponseDTO();
 
-    return ResponseEntity.status(HttpStatus.OK).body(responseDTOs);
+        responseDTO.setId(entity.getOrderId());
+        responseDTO.setDescription(entity.getDescription());
+        responseDTO.setImage(entity.getImage());
+
+        responseDTOs.add(responseDTO);
+      });
+
+      return ResponseEntity.status(HttpStatus.OK).body(responseDTOs);
+
+    } catch (Exception e) {
+
+      logger.error("could not list orders: {}", e.getMessage());
+
+      throw new InternalServerErrorException("could not list orders");
+
+    }
   }
 
   @PostMapping
