@@ -4,11 +4,11 @@ Live on [https://ramen-go-api-prod.onrender.com/v1](https://ramen-go-api-prod.on
 
 ## Here's how to use this API in production
 
-This API is hosted on the Render platform, and since it's a free instance, it shuts down due to inactivity - which can delay requests by 50 seconds or more. That's why I recommend to acess the [API documentation page](https://ramen-go-api-prod.onrender.com/) in the first time using it, then once the Swagger page is visible it'll be ready for use and validate with tools like [https://tech.redventures.com.br](https://tech.redventures.com.br).
+This API is hosted on the Render platform, and since it's a free instance, it shuts down due to inactivity - which can delay requests by 50 seconds or more. That's why I recommend to acess the [API documentation page](https://ramen-go-api-prod.onrender.com/v1) in the first time using it, then once the Swagger page is visible it'll be ready for use and validate with tools like [https://tech.redventures.com.br](https://tech.redventures.com.br).
 
 ## How to deploy to production
 
-The project is set up with auto-deploy, so every push or merge to the main branch triggers a deployment.
+The project was set up for auto-deploy on the Render platform, so every push or merge to the main branch triggers a deployment based on the [Dockerfile](Dockerfile) instructions.
 
 ## How to set up the local environment
 
