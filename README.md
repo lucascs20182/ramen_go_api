@@ -18,7 +18,7 @@ The project was set up for auto-deploy on the Render platform, so every push or 
 
 1. [Install Docker](https://docs.docker.com/desktop/install/ubuntu/)
 
-2. (Option 1) Run the entire application (packaged)
+2. (Option 1) Run the entire packaged application
 
     - Start the project's containers with `docker compose -f docker-compose-build.yaml up -d --build`
 
@@ -28,25 +28,25 @@ The project was set up for auto-deploy on the Render platform, so every push or 
 
     - Stop the containers with `docker compose -f docker-compose-build.yaml down`
 
-2. (Option 2) Install Java and Maven
+2. (Option 2) Run the application in development mode
 
-    - Java version
-        ```bash
-        openjdk 21.0.2 2024-01-16
-        OpenJDK Runtime Environment (build 21.0.2+13-Ubuntu-120.04.1)
-        OpenJDK 64-Bit Server VM (build 21.0.2+13-Ubuntu-120.04.1, mixed mode, sharing)
-        ```
+    - Install Java and Maven
 
-    - Maven version:
-        ```bash
-        Apache Maven 3.6.3
-        Maven home: /usr/share/maven
-        Java version: 21.0.2, vendor: Private Build, runtime: /usr/lib/jvm/java-21-openjdk-amd64
-        Default locale: en_US, platform encoding: UTF-8
-        OS name: "linux", version: "5.18.0-051800-generic", arch: "amd64", family: "unix"
-        ```
+        - Java version
+            ```bash
+            openjdk 21.0.2 2024-01-16
+            OpenJDK Runtime Environment (build 21.0.2+13-Ubuntu-120.04.1)
+            OpenJDK 64-Bit Server VM (build 21.0.2+13-Ubuntu-120.04.1, mixed mode, sharing)
+            ```
 
-3. Run the application in development mode
+        - Maven version:
+            ```bash
+            Apache Maven 3.6.3
+            Maven home: /usr/share/maven
+            Java version: 21.0.2, vendor: Private Build, runtime: /usr/lib/jvm/java-21-openjdk-amd64
+            Default locale: en_US, platform encoding: UTF-8
+            OS name: "linux", version: "5.18.0-051800-generic", arch: "amd64", family: "unix"
+            ```
 
     - Start the postgresql and pgadmin containers with `docker compose -f docker-compose-dev.yaml up -d`
 
